@@ -1,40 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rock Paper Scissors Game</title>
+    <title>Rock Paper Scissor</title>
+    <link rel="shortcut icon" href="./images/rock.png" type="image/x-icon">
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css"
+        integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
 </head>
+
 <body>
-    <h1>Rock Paper Scissors</h1>
-    <button id="restart-btn">Restart</button>
-    <div class="choices">
-        <div class="choice" id="rock">
-            <img src="./images/rock.png"/>
-        </div>
-        <div class="choice" id="paper">
-            <img src="./images/paper.png"/>
-        </div>
-        <div class="choice" id="scissors">
-            <img src="./images/scissors.png"/>
-        </div>
-    </div>
+    <div class="container">
 
-    <div class="score-board">
-        <div class="score">
-            <p id="user-score">0</p>
-            <p>You</p>
-        </div>
-        <div class="score">
-            <p id="comp-score">0</p>
-            <p>Comp</p>
-        </div>
-    </div>
+        <header>
+            Rock Paper Scissors
+        </header>
+        <div id="inside">
 
-    <div class="msg-container">
-        <p id="msg">Play your move</p>
+            <p id="instruction">Select Your ammuition:</p>
+
+            <div class="choice">
+
+                <div class="select-choice" id="rock">
+                    <img class="img-weapon" src="./images/rock.png" alt="rock" />
+                </div>
+
+                <div class="select-choice" id="paper">
+                    <img class="img-weapon" src="./images/paper.png" alt="paper" />
+                </div>
+
+                <div class="select-choice" id="scissors">
+                    <img class="img-weapon" src="./images/scissors.png" alt="scissors" />
+                </div>
+
+            </div>
+
+            
+            <div class="result">
+
+                <p id="message">Who will win the first game?</p>
+
+                <div class="scores">
+                    <p class="total-score">Your score: <span id="user-score">0</span></p>
+                    <p class="total-score">Computer's score: <span id="computer-score">0</span></p>
+                    <p class="total-score">Draws: <span id="draws">0</span></p>
+
+                    <button id="reset-button">Reset</button>
+                </div>
+                
+            </div>
+
+
+            <footer>
+                <p>By Kishan Tiwari</p>
+                <p>
+                    <a href="https://github.com/isKishanTiwar" target="_blank"><i class="fab fa-github-alt fa-2x"
+                            alt="Github icon"></i></a>
+                </p>
+            </footer>
+
+        </div>
     </div>
     <script src="app.js"></script>
 </body>
+
 </html>

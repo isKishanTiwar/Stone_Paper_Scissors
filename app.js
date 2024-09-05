@@ -1,83 +1,119 @@
 let userScore = 0;
-let compScore = 0; 
+let computerScore = 0;
+let draws = 0;
 
-const choices = document.querySelectorAll(".choice");
-const msg = document.querySelector("#msg");
+const drawsPara = document.getElementById("draws");
+const userScorePara = document.getElementById("user-score");
+const computerScorePara = document.getElementById("computer-score");
+const resultDiv = document.querySelector("#message");
+const resetButton = document.getElementById("reset-button");
 
-const userScorePara = document.querySelector("#user-score");
-const compScorePara = document.querySelector("#comp-score");
+const rockDiv = document.getElementById("rock");
+const paperDiv = document.getElementById("paper");
+const scissorsDiv = document.getElementById("scissors");
 
-const genCompChoice = () => {
-    const option = ["rock", "paper", "scissors"];
-    const randIdx = Math.floor(Math.random() * 3);
-    return option[randIdx];
+const getCompChoice = () => {
+  const option = ["rock", "paper", "scissors"];
+  const randomNumber = Math.floor(Math.random() * 3);
+  return option[randomNumber];
 };
 
-const drawGame =(userChoice) => {
-    console.log("game was draw.")
-    msg.innerText = `Game Draw!`;
-    msg.style.backgroundColor = "#081b31";
-}
-
-const showWinner = (userWin, userchoice, compChoice) => {
-    if(userWin) {
-        userScore++;
-        userScorePara.innerText = userScore;
-        msg.innerText = `You Win! Your ${userchoice} beats ${compChoice}`;
-        msg.style.backgroundColor = "green";
-    } else {
-        compScore++;
-        compScorePara.innerText = compScore;
-        msg.innerText = `You Lose! ${compChoice} beats your ${userchoice}`;
-        msg.style.backgroundColor = "red";
-    }
-}
-const playGame = (userchoice) => {
-    console.log("user choice = ", userchoice);
-    //Generate Computer choice  -> modular way 
-    const compChoice = genCompChoice();
-    console.log("comp choice = ", compChoice);
-
-    if(userchoice === compChoice){
-        // Draw Game
-        drawGame();
-    } else {
-    let userWin = true;
-    if(userchoice === "rock"){
-        // scissors, paper
-        userWin = compChoice === "paper" ? false : true;
-    }
-    else if(userchoice === "paper") {
-        // rock, scissors
-       userWin = compChoice === "scissors" ? false : true;
-    } else {
-        //rock,paper
-        compChoice ==="rcok" ? false : true;
-    }
-    showWinner(userWin, userchoice, compChoice);
-}
+const convertToUp = (word) => {
+  switch (word) {
+    case "rock":
+      return "Rock";
+      break;
+    case "paper":
+      return "Paper";
+      break;
+    case "scissors":
+      return "Scissors";
+      break;
+  }
 };
 
-choices.forEach((choice)=> {
-    choice.addEventListener("click", () => {
-        const userChoice = choice.getAttribute("id");
-        playGame(userChoice);
-    });
-});
-
-const restartBtn = document.querySelector("#restart-btn");
-
-// Add an event listener to the button
-restartBtn.addEventListener("click", () => {
-    // Reset the scores
-    userScore = 0;
-    compScore = 0;
-
-    // Update the score display
+const win = (userChoice, compChoice) => {
+    userScore++;
     userScorePara.innerText = userScore;
-    compScorePara.innerText = compScore;
+    const randomWin = ["beats", "smashes", "destroys", "obliterates"];
+    const randomNumber = Math.floor(Math.random() * 4);
+    const winEmojis = ["🤠", "🎉", "✨", "🎊", "🤩", "👌"];
+    const randomNumberEmoji = Math.floor(Math.random() * 6);
 
-    // Clear the message
-    msg.innerText = "";
-    msg.style.backgroundColor = "#081b31";
-});
+    resultDiv.innerText = `${convertToUp(userChoice)} ${randomWin[randomNumber]} ${convertToUp(compChoice)}. You win! ${winEmojis[randomNumberEmoji]}`;
+
+    document.getElementById(userChoice).classList.add("win-border");
+    setTimeout(() => document.getElementById(userChoice).classList.remove("win-border"), 600);
+};
+
+const lose = (userChoice, compChoice) => {
+    computerScore++;
+    computerScorePara.innerHTML = computerScore;
+    const randomWin = ["beats", "smashes", "destroys", "obliterates"];
+    const randomNumber = Math.floor(Math.random() * 4);
+    const loseEmojis = ["😩", "😥 ", "😭", "😵‍💫", "😔", "🤦🏽"]
+    const randomNumberEmoji = Math.floor(Math.random() * 6);
+    resultDiv.innerHTML = `${convertToUp(compChoice)} ${randomWin[randomNumber]} ${convertToUp(userChoice)}. You lose! ${loseEmojis[randomNumberEmoji]}`;
+
+    document.getElementById(userChoice).classList.add('lose-border');
+    setTimeout(() => document.getElementById(userChoice).classList.remove('lose-border'), 600);
+
+};
+
+const tie = (userChoice, compChoice) => {
+    draws++;
+    drawsPara.innerHTML = draws;
+    const tieEmojis = ["🤔", " 😱", "🙈", "🧐", "🙀", "🙃"];
+    const randomNumberEmoji = Math.floor(Math.random() * 6);
+    resultDiv.innerHTML = `${convertToUp(compChoice)} matches ${convertToUp(userChoice)}. It's a tie! ${tieEmojis[randomNumberEmoji]}`;
+
+    document.getElementById(userChoice).classList.add('tie-border');
+    setTimeout(() => document.getElementById(userChoice).classList.remove('tie-border'), 600);
+};
+
+const game = (userChoice) => {
+    const compChoice = getCompChoice();
+
+    switch (userChoice + compChoice) {
+        case "paperrock":
+        case "rockscissors":
+        case "scissorspaper":
+            win(userChoice, compChoice);
+            break;
+
+        case "rockpaper":
+        case "scissorsrock":
+        case "paperscissors":
+            lose(userChoice, compChoice);
+            break;
+
+        case "rockrock":
+        case "paperpaper":
+        case "scissorsscissors":
+            tie(userChoice, compChoice);
+            break;
+    }
+
+};
+
+const resetScores = () => {
+    computerScore = 0;
+    computerScorePara.innerHTML = computerScore
+    userScore = 0;
+    userScorePara.innerHTML = userScore;
+    draws = 0;
+    drawsPara.innerHTML = draws;
+    resultDiv.innerHTML = 'Who will win this match ?';
+};
+
+const main = () => {
+    rockDiv.addEventListener('click', () => game("rock"));
+
+    paperDiv.addEventListener('click', () => game("paper"));
+
+    scissorsDiv.addEventListener('click', () => game("scissors"));
+
+    resetButton.addEventListener('click', () => resetScores());
+};
+
+main();
